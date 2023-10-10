@@ -67,9 +67,6 @@ async def del_zakaz_id(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['id_tovar'] = int(message.text)
         data['user'] = message.from_user.id
-        # print(data['name'])
-        # print('reg.name')
-        # data['name'] = message.text
     cursor.execute('UPDATE tovar SET status = 2,  user_id = ? WHERE id = ?', (int(user_id), int(id_tovar),))
     database.commit()
     await message.answer(f"Tovar magazindan olib tashlandi, tekshirib ko'rishingiz tavsiya etiladi.", reply_markup=markup_request)
