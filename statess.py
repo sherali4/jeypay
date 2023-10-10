@@ -12,6 +12,8 @@ sherali ='496958227'
 bot_id = '6368002025'
 xa_yuq = '-1001605076473'
 
+
+
 storage = MemoryStorage
 from baza import add_user, add_user_name, add_user_numb, db_connect, add_user_location, katalog, add_tovar, add_item, add_zakaz, zakaz_otmen, zakaz_oladi
 
@@ -37,6 +39,9 @@ class tovar_reg(StatesGroup):
     tarifi = State()
     photo = State()
 
+class tovar_del(StatesGroup):
+    id_tovar = State()
+
 markup_request = ReplyKeyboardMarkup(resize_keyboard=True).add(
     KeyboardButton('Telefon raqamingizni kiriting ☎️', request_contact=True)
 ).add(
@@ -46,6 +51,37 @@ markup_request = ReplyKeyboardMarkup(resize_keyboard=True).add(
 ).add(
     KeyboardButton('/katalog')
 )
+
+
+@dp.message_handler(commands=['del'], state=None)
+async def add_items(message: types.Message):
+    if message.from_id == 6456875695 or message.from_id == 6158978005 or message.from_id == 496958227 or message.from_id == 5954851285 or message.from_id== 5163491786 or message.from_id== 6292591760 or message.from_id== 6652659593 or message.from_id== 6591515474 or message.from_id== 2060764847:
+        await tovar_del.id_tovar.set()
+        await message.reply('Tovarning id raqamini kiriting:', reply_markup=markup_request)
+    else:
+         await message.reply('Siz Admin emassiz')
+
+@dp.message_handler(state=tovar_del.id_tovar)
+async def del_zakaz_id(message: types.Message, state: FSMContext):
+# async def add_item_name(call: types.CallbackQuery, state: FSMContext):
+    async with state.proxy() as data:
+        data['id_tovar'] = int(message.text)
+        data['user'] = message.from_user.id
+        # print(data['name'])
+        # print('reg.name')
+        # data['name'] = message.text
+    await message.answer(f"Tovar magazindan olib tashlandi, tekshirib ko'rishingiz tavsiya etiladi.", reply_markup=markup_request)
+    await tovar_del.finish()
+
+
+# @dp.message_handler(lambda message: not message.text, state=tovar_del.id_tovar)
+# async def add_oshibka(message: types.Message):
+#     # print('reg.rasm-emas')
+#     await message.answer('bu id raqamida tovar mavjud emas')
+
+
+
+
 
 @dp.message_handler(commands=['katalog'], state=None)
 async def add_items(message: types.Message):
@@ -148,7 +184,6 @@ async def start_message(message: types.Message, state=FSMContext):
     add_user_location(message)
     await bot.send_location(496958227, lat, long)
 
-#     7b53458e-3712-43cc-b4ad-77134a13091b yandex location
 
 
 
@@ -157,7 +192,7 @@ async def start_message(message: types.Message, state=FSMContext):
     file_id = message.video.file_id  # Get file id
     await bot.send_message(496958227, file_id)
     print(file_id)
-#     BAACAgIAAxkBAAIOEWTzeW2nWIe_8fVDCp6QH4N0jWsYAAK3NQACha2gS0D18_kdgmjiMAQ video
+
 
 
 @dp.message_handler(state=user_reg.name)
