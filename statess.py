@@ -50,6 +50,8 @@ markup_request = ReplyKeyboardMarkup(resize_keyboard=True).add(
     KeyboardButton("/video")
 ).add(
     KeyboardButton('/katalog')
+).add(
+    KeyboardButton('/del')
 )
 
 
