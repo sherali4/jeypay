@@ -22,6 +22,14 @@ def zakaz_otmen(id_client, id_tovar, user_id):
     # print(id_client, id_tovar)
     # print(type(id_client), type(id_tovar), type(user_id))
 
+
+def del_tovar(id_tovar, user_id):
+    cursor.execute('UPDATE zakaz SET sotib_olishi = 2,  delete_user = ? WHERE id_client= ? AND id_tovar = ?', (int(user_id), int(id_client), int(id_tovar),))
+    database.commit()
+    # print(id_client, id_tovar)
+    # print(type(id_client), type(id_tovar), type(user_id))
+
+
 def zakaz_oladi(id_client, id_tovar, user_id):
     cursor.execute('UPDATE zakaz SET sotib_olishi = 1,  delete_user = ? WHERE id_client= ? AND id_tovar = ?', (int(user_id), int(id_client), int(id_tovar),))
     database.commit()
